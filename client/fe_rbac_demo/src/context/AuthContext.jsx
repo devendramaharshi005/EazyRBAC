@@ -9,11 +9,11 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
-    const storedUser = localStorage.getItem("authUserObj");
+    const storedUser = sessionStorage.getItem("authUserObj");
     return storedUser ? JSON.parse(storedUser) : null;
   });
   const [token, setToken] = useState(() => {
-    return localStorage.getItem("authToken") || null;
+    return sessionStorage.getItem("authToken") || null;
   });
 
   const login = async (username, password) => {
@@ -28,8 +28,8 @@ export const AuthProvider = ({ children }) => {
       setUser(userData);
       setToken(authToken);
 
-      localStorage.setItem("authToken", authToken);
-      localStorage.setItem("authUserObj", JSON.stringify(userData));
+      sessionStorage.setItem("authToken", authToken);
+      sessionStorage.setItem("authUserObj", JSON.stringify(userData));
       toast.success("Login successful!");
     } catch (err) {
       console.error(err.response?.data?.message || "Login failed");
@@ -54,8 +54,8 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setUser(null);
     setToken(null);
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("authUserObj");
+    sessionStorage.removeItem("authToken");
+    sessionStorage.removeItem("authUserObj");
     toast.success("You have been logged out.");
     window.location.pathname = "/";
   };
